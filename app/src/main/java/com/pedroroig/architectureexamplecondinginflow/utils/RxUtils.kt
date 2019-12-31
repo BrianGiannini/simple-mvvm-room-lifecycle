@@ -5,7 +5,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 fun subscribeOnBackground(function: () -> Unit) {
-    Single.just(function())
+    Single.fromCallable {
+        function()
+    }
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe()
