@@ -1,0 +1,12 @@
+package com.pedroroig.architectureexamplecondinginflow.utils
+
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+
+fun subscribeOnBackground(function: () -> Unit) {
+    Single.just(function())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe()
+}
