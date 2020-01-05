@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ArchitectureExampleCondingInFlow</string>
+    <string name="title">Title</string>
+    <string name="description">description</string>
+    <string name="priority">Priority</string>
+    <string name="save">Save</string>
 </resources>
