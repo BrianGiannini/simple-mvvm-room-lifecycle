@@ -1,6 +1,5 @@
 package com.pedroroig.architectureexamplecondinginflow
 
-import android.R.attr.description
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
