@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 const val ADD_NOTE_REQUEST = 1
+const val EDIT_NOTE_REQUEST = 2
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpListeners() {
         button_add_note.setOnClickListener {
-            val intent = Intent(this, AddNoteActivity::class.java)
+            val intent = Intent(this, AddEditNoteActivity::class.java)
             startActivityForResult(intent, ADD_NOTE_REQUEST)
         }
 
@@ -71,7 +72,14 @@ class MainActivity : AppCompatActivity() {
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.setHasFixedSize(true)
 
-        adapter = NoteAdapter()
+        adapter = NoteAdapter { clickedNote ->
+            val intent = Intent(this, AddEditNoteActivity::class.java)
+            intent.putExtra(EXTRA_ID, clickedNote.id)
+            intent.putExtra(EXTRA_TITLE, clickedNote.title)
+            intent.putExtra(EXTRA_DESCRIPTION, clickedNote.description)
+            intent.putExtra(EXTRA_PRIORITY, clickedNote.priority)
+            startActivityForResult(intent, EDIT_NOTE_REQUEST)
+        }
         recycler_view.adapter = adapter
     }
 
@@ -84,6 +92,20 @@ class MainActivity : AppCompatActivity() {
             val priority: Int = data.getIntExtra(EXTRA_PRIORITY, -1)
             vm.insert(Note(title, description, priority))
             Toast.makeText(this, "Note inserted!", Toast.LENGTH_SHORT).show()
+
+        } else if(data != null && requestCode == EDIT_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
+            val id = data.getIntExtra(EXTRA_ID, -1)
+            if(id == -1) {
+                Toast.makeText(this, "Note couldn't be updated!", Toast.LENGTH_SHORT).show()
+                return
+            }
+            val title: String = data.getStringExtra(EXTRA_TITLE)
+            val description: String =
+                data.getStringExtra(EXTRA_DESCRIPTION)
+            val priority: Int = data.getIntExtra(EXTRA_PRIORITY, -1)
+            vm.update(Note(title, description, priority, id))
+            Toast.makeText(this, "Note updated!", Toast.LENGTH_SHORT).show()
+
         } else {
             Toast.makeText(this, "Note not saved!", Toast.LENGTH_SHORT).show()
         }

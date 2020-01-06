@@ -5,8 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 
-class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
+class NoteAdapter(private val onItemClickListener: (Note) -> Unit) : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
     private var notes: List<Note> = ArrayList()
 
@@ -35,11 +36,18 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
     fun getNoteAt(position: Int) = notes[position]
 
 
-    class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class NoteHolder(iv: View) : RecyclerView.ViewHolder(iv) {
 
         val tvTitle: TextView = itemView.findViewById(R.id.text_view_title)
         val tvDescription: TextView = itemView.findViewById(R.id.text_view_description)
         val tvPriority: TextView = itemView.findViewById(R.id.text_view_priority)
+
+        init {
+            itemView.setOnClickListener {
+                if(adapterPosition != NO_POSITION)
+                    onItemClickListener(notes[adapterPosition])
+            }
+        }
 
     }
 }
