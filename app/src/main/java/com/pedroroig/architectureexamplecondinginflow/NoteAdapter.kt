@@ -4,12 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 
-class NoteAdapter(private val onItemClickListener: (Note) -> Unit) : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
-
-    private var notes: List<Note> = ArrayList()
+class NoteAdapter(private val onItemClickListener: (Note) -> Unit)
+    : ListAdapter<Note, NoteAdapter.NoteHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent,
@@ -17,23 +18,15 @@ class NoteAdapter(private val onItemClickListener: (Note) -> Unit) : RecyclerVie
         return NoteHolder(itemView)
     }
 
-    override fun getItemCount() =
-        notes.size
-
     override fun onBindViewHolder(holder: NoteHolder, position: Int) {
-        with(notes[position]) {
+        with(getItem(position)) {
             holder.tvTitle.text = title
             holder.tvDescription.text = description
             holder.tvPriority.text = priority.toString()
         }
     }
 
-    fun setNotes(notes: List<Note>) {
-        this.notes = notes
-        notifyDataSetChanged()
-    }
-
-    fun getNoteAt(position: Int) = notes[position]
+    fun getNoteAt(position: Int) = getItem(position)
 
 
     inner class NoteHolder(iv: View) : RecyclerView.ViewHolder(iv) {
@@ -45,9 +38,18 @@ class NoteAdapter(private val onItemClickListener: (Note) -> Unit) : RecyclerVie
         init {
             itemView.setOnClickListener {
                 if(adapterPosition != NO_POSITION)
-                    onItemClickListener(notes[adapterPosition])
+                    onItemClickListener(getItem(adapterPosition))
             }
         }
 
     }
+}
+
+private val diffCallback = object : DiffUtil.ItemCallback<Note>() {
+    override fun areItemsTheSame(oldItem: Note, newItem: Note) = oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: Note, newItem: Note) =
+        oldItem.title == newItem.title
+                && oldItem.description == newItem.description
+                && oldItem.priority == newItem.priority
 }

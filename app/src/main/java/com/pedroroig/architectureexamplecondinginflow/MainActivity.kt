@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         vm.getAllNotes().observe(this, Observer {
             Log.i("Notes observed", "$it")
 
-            adapter.setNotes(it)
+            adapter.submitList(it)
         })
 
     }
