@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
+// never store context here
 class NoteViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repository = NoteRepository(app)

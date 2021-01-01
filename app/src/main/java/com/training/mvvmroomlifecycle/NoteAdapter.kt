@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 
-class NoteAdapter(private val onItemClickListener: (Note) -> Unit)
-    : ListAdapter<Note, NoteAdapter.NoteHolder>(diffCallback) {
+class NoteAdapter(private val onItemClickListener: (Note) -> Unit) :
+    ListAdapter<Note, NoteAdapter.NoteHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent,
-            false)
+        val itemView = LayoutInflater.from(parent.context).inflate(
+            R.layout.note_item, parent,
+            false
+        )
         return NoteHolder(itemView)
     }
 
@@ -26,7 +28,7 @@ class NoteAdapter(private val onItemClickListener: (Note) -> Unit)
         }
     }
 
-    fun getNoteAt(position: Int) = getItem(position)
+    fun getNoteAt(position: Int): Note = getItem(position)
 
 
     inner class NoteHolder(iv: View) : RecyclerView.ViewHolder(iv) {
@@ -37,7 +39,7 @@ class NoteAdapter(private val onItemClickListener: (Note) -> Unit)
 
         init {
             itemView.setOnClickListener {
-                if(adapterPosition != NO_POSITION)
+                if (adapterPosition != NO_POSITION)
                     onItemClickListener(getItem(adapterPosition))
             }
         }

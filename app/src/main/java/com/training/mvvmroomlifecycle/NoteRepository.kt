@@ -8,7 +8,6 @@ class NoteRepository(application: Application) {
 
     private var noteDao: NoteDao
     private var allNotes: LiveData<List<Note>>
-
     private val database = NoteDatabase.getInstance(application)
 
     init {
@@ -17,10 +16,6 @@ class NoteRepository(application: Application) {
     }
 
     fun insert(note: Note) {
-//        Single.just(noteDao.insert(note))
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe()
         subscribeOnBackground {
             noteDao.insert(note)
         }

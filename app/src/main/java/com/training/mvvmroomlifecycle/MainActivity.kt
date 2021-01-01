@@ -9,7 +9,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.LEFT
 import androidx.recyclerview.widget.ItemTouchHelper.RIGHT
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         setUpRecyclerView()
         setUpListeners()
 
-        vm = ViewModelProviders.of(this)[NoteViewModel::class.java]
+        vm = ViewModelProvider(this).get(NoteViewModel::class.java)
 
         vm.getAllNotes().observe(this, Observer {
             Log.i("Notes observed", "$it")
@@ -84,38 +84,35 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (data != null && requestCode == ADD_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
+
+        if (data != null) {
             val title = data.getStringExtra(EXTRA_TITLE)
             val description = data.getStringExtra(EXTRA_DESCRIPTION)
             val priority = data.getIntExtra(EXTRA_PRIORITY, -1)
 
-            if (description != null && title != null) {
-                vm.insert(Note(title, description, priority))
-                Toast.makeText(this, "Note inserted!", Toast.LENGTH_SHORT).show()
-            }
+            if (requestCode == ADD_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
+                if (description != null && title != null) {
+                    vm.insert(Note(title, description, priority))
+                    Toast.makeText(this, "Note inserted!", Toast.LENGTH_SHORT).show()
+                }
+            } else if (requestCode == EDIT_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
+                val id = data.getIntExtra(EXTRA_ID, -1)
+                if (id == -1) {
+                    Toast.makeText(this, "Note couldn't be updated!", Toast.LENGTH_SHORT).show()
+                    return
+                }
 
-        } else if (data != null && requestCode == EDIT_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
-            val id = data.getIntExtra(EXTRA_ID, -1)
-            if (id == -1) {
-                Toast.makeText(this, "Note couldn't be updated!", Toast.LENGTH_SHORT).show()
-                return
+                if (description != null && title != null) {
+                    vm.update(Note(title, description, priority, id))
+                    Toast.makeText(this, "Note updated!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Note not saved!", Toast.LENGTH_SHORT).show()
             }
-            val title = data.getStringExtra(EXTRA_TITLE)
-            val description = data.getStringExtra(EXTRA_DESCRIPTION)
-            val priority: Int = data.getIntExtra(EXTRA_PRIORITY, -1)
-
-            if (description != null && title != null) {
-                vm.update(Note(title, description, priority, id))
-                Toast.makeText(this, "Note updated!", Toast.LENGTH_SHORT).show()
-            }
-
-        } else {
-            Toast.makeText(this, "Note not saved!", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val menuInflater = menuInflater
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
