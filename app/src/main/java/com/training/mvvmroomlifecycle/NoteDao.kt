@@ -1,4 +1,4 @@
-package com.pedroroig.architectureexamplecondinginflow
+package com.training.mvvmroomlifecycle
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

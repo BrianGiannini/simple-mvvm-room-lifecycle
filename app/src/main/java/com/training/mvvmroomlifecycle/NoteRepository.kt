@@ -1,8 +1,8 @@
-package com.pedroroig.architectureexamplecondinginflow
+package com.training.mvvmroomlifecycle
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import com.pedroroig.architectureexamplecondinginflow.utils.subscribeOnBackground
+import com.training.mvvmroomlifecycle.utils.subscribeOnBackground
 
 class NoteRepository(application: Application) {
 

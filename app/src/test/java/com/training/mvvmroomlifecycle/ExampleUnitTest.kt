@@ -1,4 +1,4 @@
-package com.pedroroig.architectureexamplecondinginflow
+package com.training.mvvmroomlifecycle
 
 import org.junit.Test
 

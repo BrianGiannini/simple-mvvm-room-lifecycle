@@ -1,9 +1,8 @@
-package com.pedroroig.architectureexamplecondinginflow
+package com.training.mvvmroomlifecycle
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.pedroroig.architectureexamplecondinginflow.utils.subscribeOnBackground
 
 class NoteViewModel(app: Application) : AndroidViewModel(app) {
 

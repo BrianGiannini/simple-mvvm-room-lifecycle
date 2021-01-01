@@ -1,4 +1,4 @@
-package com.pedroroig.architectureexamplecondinginflow
+package com.training.mvvmroomlifecycle
 
 import android.view.LayoutInflater
 import android.view.View

@@ -1,4 +1,4 @@
-package com.pedroroig.architectureexamplecondinginflow.utils
+package com.training.mvvmroomlifecycle.utils
 
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

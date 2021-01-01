@@ -1,11 +1,11 @@
-package com.pedroroig.architectureexamplecondinginflow
+package com.training.mvvmroomlifecycle
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.pedroroig.architectureexamplecondinginflow.utils.subscribeOnBackground
+import com.training.mvvmroomlifecycle.utils.subscribeOnBackground
 
 @Database(entities = [Note::class], version = 1)
 abstract class NoteDatabase : RoomDatabase() {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ArchitectureExampleCondingInFlow</string>
+    <string name="app_name">Simple MVVM Room Lifecycle</string>
     <string name="title">Title</string>
     <string name="description">description</string>
     <string name="priority">Priority</string>

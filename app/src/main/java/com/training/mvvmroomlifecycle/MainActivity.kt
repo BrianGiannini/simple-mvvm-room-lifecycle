@@ -1,4 +1,4 @@
-package com.pedroroig.architectureexamplecondinginflow
+package com.training.mvvmroomlifecycle
 
 import android.app.Activity
 import android.content.Intent
@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setUpRecyclerView()
-
         setUpListeners()
 
         vm = ViewModelProviders.of(this)[NoteViewModel::class.java]
@@ -85,26 +84,30 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(data != null && requestCode == ADD_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
-            val title: String = data.getStringExtra(EXTRA_TITLE)
-            val description: String =
-                data.getStringExtra(EXTRA_DESCRIPTION)
-            val priority: Int = data.getIntExtra(EXTRA_PRIORITY, -1)
-            vm.insert(Note(title, description, priority))
-            Toast.makeText(this, "Note inserted!", Toast.LENGTH_SHORT).show()
+        if (data != null && requestCode == ADD_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
+            val title = data.getStringExtra(EXTRA_TITLE)
+            val description = data.getStringExtra(EXTRA_DESCRIPTION)
+            val priority = data.getIntExtra(EXTRA_PRIORITY, -1)
 
-        } else if(data != null && requestCode == EDIT_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (description != null && title != null) {
+                vm.insert(Note(title, description, priority))
+                Toast.makeText(this, "Note inserted!", Toast.LENGTH_SHORT).show()
+            }
+
+        } else if (data != null && requestCode == EDIT_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
             val id = data.getIntExtra(EXTRA_ID, -1)
-            if(id == -1) {
+            if (id == -1) {
                 Toast.makeText(this, "Note couldn't be updated!", Toast.LENGTH_SHORT).show()
                 return
             }
-            val title: String = data.getStringExtra(EXTRA_TITLE)
-            val description: String =
-                data.getStringExtra(EXTRA_DESCRIPTION)
+            val title = data.getStringExtra(EXTRA_TITLE)
+            val description = data.getStringExtra(EXTRA_DESCRIPTION)
             val priority: Int = data.getIntExtra(EXTRA_PRIORITY, -1)
-            vm.update(Note(title, description, priority, id))
-            Toast.makeText(this, "Note updated!", Toast.LENGTH_SHORT).show()
+
+            if (description != null && title != null) {
+                vm.update(Note(title, description, priority, id))
+                Toast.makeText(this, "Note updated!", Toast.LENGTH_SHORT).show()
+            }
 
         } else {
             Toast.makeText(this, "Note not saved!", Toast.LENGTH_SHORT).show()
